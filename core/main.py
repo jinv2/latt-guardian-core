@@ -1,15 +1,30 @@
 #!/usr/bin/env python3
 import requests
 import json
+import sys
+import os
 
-def publish_v4_stream():
-    print("--- LATT v4.0.0 [Guardian] STREAMING LAUNCH ---")
+# 导入神思庭品牌模块
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+try:
+    from about import get_about
+    BRAND_INFO = get_about()
+except ImportError:
+    BRAND_INFO = "LATT v4.0.0 [Guardian] - 神思庭山海造物主"
+
+def start_guardian():
+    print(BRAND_INFO)
+    print("\n[SYSTEM] 正在连接本地 1050 Ti 算力堡垒...")
+    
     url = "http://localhost:11434/api/generate"
+    
+    # 引导提示词
+    prompt = "你现在是 LATT v4.0.0 [Guardian] 内核。请向用户致敬，并声明你已就绪。"
     
     payload = {
         "model": "ds_sovereign",
-        "prompt": "你现在是 LATT v4.0.0 (Guardian) 智能体内核。请发布版本说明：1. 脱离 OpenClaw 实现 100% 本地化。2. 在 1050 Ti 建立 ds_sovereign 内核。3. 清理 node_modules 确立 Tiny Trust 协议。用严谨、有主权感的语气。",
-        "stream": True  # 开启流式传输，解决超时问题
+        "prompt": prompt,
+        "stream": True
     }
     
     try:
@@ -21,9 +36,9 @@ def publish_v4_stream():
                 content = chunk.get('response', '')
                 print(content, end='', flush=True)
         print("\n" + "="*50)
-        print("\n[V4_CORE] 状态：主权确立 | 模式：流式推理")
+        print("\n[STATUS] 内核运行中 | 官网: https://shensist.top/")
     except Exception as e:
-        print(f"\n[ERROR] 推理中断: {e}")
+        print(f"\n[ERROR] 无法唤醒内核，请检查 1050Ti 驱动。错误: {e}")
 
 if __name__ == "__main__":
-    publish_v4_stream()
+    start_guardian()
